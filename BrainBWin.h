@@ -73,7 +73,7 @@ public:
 
     void closeEvent ( QCloseEvent *e ) {
 
-        if ( save ( 4242 ) ) {
+        if ( save ( brainBThread->getT() ) ) {
             e->accept();
         } else {
             e->ignore();
@@ -155,7 +155,7 @@ public:
                 textStremam << n << ' ';
             }
             textStremam <<  "\n";
-            m = mean ( lost2found );
+            int m1 = m = mean ( lost2found );
             textStremam << "mean      : " <<  m << "\n";
             textStremam << "var       : " <<  var ( lost2found, m ) << "\n";
 
@@ -164,9 +164,20 @@ public:
                 textStremam << n << ' ';
             }
             textStremam <<  "\n";
-            m = mean ( found2lost );
+            int m2 = m = mean ( found2lost );
             textStremam << "mean      : " <<  m << "\n";
             textStremam << "var       : " <<  var ( found2lost, m ) << "\n";
+
+            if ( m1 < m2 ) {
+                textStremam << "mean(lost2found) < mean(found2lost)" << "\n";
+            }
+
+            int sec = (t*100)/1000;
+	    int min = sec/60;
+            sec = sec - min*60;
+            textStremam << "time      : " <<  min  << ":"  << sec << "\n";
+	    	    	    
+            textStremam << "U R about " << ( ( ( m1+m2 ) /2 ) /8 ) /1024 << " Kilobytes\n";
 
             tfile.close();
         }

@@ -131,7 +131,7 @@ void BrainBWin::keyPressEvent(QKeyEvent *event)
 {
 
     if (event->key() == Qt::Key_S) {
-        save(42);
+        save(brainBThread->getT());
     }
 
 }
