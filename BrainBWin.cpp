@@ -30,7 +30,7 @@
 
 BrainBWin::BrainBWin(int w, int h, QWidget *parent) : QMainWindow(parent)
 {
-    QString name = "NEMESPOR BrainB Test 3";
+    QString name = "NEMESPOR BrainB Test 4";
 
     setWindowTitle(name);
     setFixedSize(QSize(w, h));
