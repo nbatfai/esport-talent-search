@@ -30,7 +30,7 @@
 
 BrainBWin::BrainBWin(int w, int h, QWidget *parent) : QMainWindow(parent)
 {
-    QString name = "NEMESPOR BrainB Test 4";
+    QString name = "NEMESPOR BrainB Test 4.1";
 
     setWindowTitle(name);
     setFixedSize(QSize(w, h));
@@ -43,14 +43,15 @@ BrainBWin::BrainBWin(int w, int h, QWidget *parent) : QMainWindow(parent)
     connect(brainBThread, SIGNAL(heroesChanged(QImage, int, int)),
             this, SLOT(updateHeroes(QImage, int, int)));
 
-    connect(brainBThread, SIGNAL(stats(int)),
-            this, SLOT(stats(int)));
+    connect(brainBThread, SIGNAL(endAndStats(int)),
+            this, SLOT(endAndStats(int)));
 
 }
 
-void BrainBWin::stats(const int &t)
+void BrainBWin::endAndStats(const int &t)
 {
     save(t);
+    close();
 }
 
 void BrainBWin::updateHeroes(const QImage &image, const int &x, const int &y)

@@ -61,7 +61,7 @@ BrainBThread::~BrainBThread()
 
 void BrainBThread::run()
 {
-    while (true) {
+    while (time < endTime) {
 
         QThread::msleep(delay);
 
@@ -72,15 +72,11 @@ void BrainBThread::run()
             devel();
             draw();
 
-            if (time % 300 == 0) {
-
-                emit stats(time);
-
-            }
-
         }
 
     }
+    
+    emit endAndStats(endTime);
 
 }
 

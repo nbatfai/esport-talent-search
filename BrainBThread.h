@@ -85,6 +85,7 @@ class BrainBThread : public QThread
     cv::Mat prev {400, 400, CV_8UC3, cv::Scalar ( 0, 0, 255 ) };
     int bps;
     long time {0};
+    long endTime {10*20}; /*{10*60*10};*/
     int delay {100};
 
     bool paused {false};
@@ -284,10 +285,17 @@ public:
 
     }
 
+    void finish () {
+
+        time = endTime;
+
+    }
+    
+    
 signals:
 
     void heroesChanged ( const QImage &image, const int &x, const int &y );
-    void stats ( const int &t );
+    void endAndStats ( const int &t );
 
 };
 

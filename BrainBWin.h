@@ -74,6 +74,7 @@ public:
     void closeEvent ( QCloseEvent *e ) {
 
         if ( save ( brainBThread->getT() ) ) {
+	    brainBThread->finish();
             e->accept();
         } else {
             e->ignore();
@@ -187,8 +188,8 @@ public:
 public slots :
 
     void updateHeroes ( const QImage &image, const int &x, const int &y );
-    void stats ( const int &t );
-
+    //void stats ( const int &t );
+    void endAndStats ( const int &t );
 };
 
 #endif // BrainBWin
