@@ -76,7 +76,7 @@ void BrainBThread::run()
 
     }
     
-    emit endAndStats(endTime);
+    emit endAndStats(endTime);   
 
 }
 

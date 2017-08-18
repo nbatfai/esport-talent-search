@@ -30,12 +30,11 @@
 
 BrainBWin::BrainBWin(int w, int h, QWidget *parent) : QMainWindow(parent)
 {
-    QString name = "NEMESPOR BrainB Test 4.1";
 
-    setWindowTitle(name);
+    setWindowTitle(appName);
     setFixedSize(QSize(w, h));
 
-    dir = name + " - " + QDate::currentDate().toString() + QString::number(QDateTime::currentMSecsSinceEpoch());
+    statDir = appName + " - " + QDate::currentDate().toString() + QString::number(QDateTime::currentMSecsSinceEpoch());
 
     brainBThread = new BrainBThread(w, h);
     brainBThread->start();
@@ -50,6 +49,12 @@ BrainBWin::BrainBWin(int w, int h, QWidget *parent) : QMainWindow(parent)
 
 void BrainBWin::endAndStats(const int &t)
 {
+
+    qDebug()  << "\n\n\n";
+    qDebug()  << "Thank you for using " + appName;
+    qDebug()  << "The result can be found in the directory " + statDir;
+    qDebug()  << "\n\n\n";
+
     save(t);
     close();
 }
@@ -74,9 +79,9 @@ void BrainBWin::updateHeroes(const QImage &image, const int &x, const int &y)
 
                 state = lost;
                 nofLost = 0;
-                qDebug() << "LOST";
-                double mean = brainBThread->meanLost();
-                qDebug() << mean;
+                //qDebug() << "LOST";
+                //double mean = brainBThread->meanLost();
+                //qDebug() << mean;
 
                 brainBThread->decComp();
             }
@@ -91,9 +96,9 @@ void BrainBWin::updateHeroes(const QImage &image, const int &x, const int &y)
 
                 state = found;
                 nofFound = 0;
-                qDebug() << "FOUND";
-                double mean = brainBThread->meanFound();
-                qDebug() << mean;
+                //qDebug() << "FOUND";
+                //double mean = brainBThread->meanFound();
+                //qDebug() << mean;
 
                 brainBThread->incComp();
             }
@@ -114,7 +119,18 @@ void BrainBWin::paintEvent(QPaintEvent *)
     QPainter qpainter(this);
 
     qpainter.drawPixmap(0, 0, pixmap);
+    
     qpainter.drawText(10, 20, "Press and hold the mouse button on Samu Entropy");
+
+    int time = brainBThread->getT();
+    int min, sec;
+    millis2minsec(time, min, sec);
+    QString timestr = QString::number(min) + ":" + QString::number(sec);
+    qpainter.drawText(10, 40, timestr);
+
+    int bps = brainBThread->get_bps();
+    QString bpsstr = QString::number(bps) + " bps";
+    qpainter.drawText(80, 40, bpsstr);
 
     qpainter.end();
 }
@@ -133,6 +149,8 @@ void BrainBWin::keyPressEvent(QKeyEvent *event)
 
     if (event->key() == Qt::Key_S) {
         save(brainBThread->getT());
+    } else if (event->key() == Qt::Key_P) {
+        brainBThread->pause();
     }
 
 }

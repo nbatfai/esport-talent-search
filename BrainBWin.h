@@ -66,7 +66,8 @@ class BrainBWin : public QMainWindow
     std::vector<int> lost2found;
     std::vector<int> found2lost;
 
-    QString dir;
+    QString statDir;
+    QString appName = "NEMESPOR BrainB Test 4.1.1";
 
 public:
     BrainBWin ( int w = 256, int h = 256, QWidget *parent = 0 );
@@ -74,7 +75,7 @@ public:
     void closeEvent ( QCloseEvent *e ) {
 
         if ( save ( brainBThread->getT() ) ) {
-	    brainBThread->finish();
+            brainBThread->finish();
             e->accept();
         } else {
             e->ignore();
@@ -107,16 +108,24 @@ public:
     }
 
 
+    void millis2minsec ( int millis, int &min, int &sec ) {
+
+        sec = ( millis * 100 ) / 1000;
+        min = sec / 60;
+        sec = sec - min * 60;
+
+    }
+
     bool save ( int t ) {
 
         bool ret = false;
 
-        if ( !QDir ( dir ).exists() )
-            if ( !QDir().mkdir ( dir ) ) {
+        if ( !QDir ( statDir ).exists() )
+            if ( !QDir().mkdir ( statDir ) ) {
                 return false;
             }
 
-        QString name = dir + "/BrainB-Test3-" + QString::number ( t );
+        QString name = statDir + "/Test-" + QString::number ( t );
         QFile file ( name + "-screenimage.png" );
         if ( file.open ( QIODevice::WriteOnly ) ) {
             ret = pixmap.save ( &file, "PNG" );
@@ -127,6 +136,7 @@ public:
         if ( ret ) {
             QTextStream textStremam ( &tfile );
 
+            textStremam << appName << "\n";
             textStremam << "time      : " <<  brainBThread->getT() << "\n";
             textStremam << "bps       : " <<  brainBThread->get_bps() << "\n";
             textStremam << "noc       : " <<  brainBThread->nofHeroes() << "\n";
@@ -173,11 +183,10 @@ public:
                 textStremam << "mean(lost2found) < mean(found2lost)" << "\n";
             }
 
-            int sec = (t*100)/1000;
-	    int min = sec/60;
-            sec = sec - min*60;
+            int min, sec;
+            millis2minsec ( t, min, sec );
             textStremam << "time      : " <<  min  << ":"  << sec << "\n";
-	    	    	    
+
             textStremam << "U R about " << ( ( ( m1+m2 ) /2 ) /8 ) /1024 << " Kilobytes\n";
 
             tfile.close();

@@ -174,7 +174,6 @@ public:
 
     }
 
-
     double var ( std::vector<int> vect, double mean ) {
 
         double accum = 0.0;
@@ -266,7 +265,7 @@ public:
 
         bps = cv::countNonZero ( aRgb ) * 10;
 
-        qDebug()  << bps << " bits/sec";
+        //qDebug()  << bps << " bits/sec";
 
         prev = src;
 
