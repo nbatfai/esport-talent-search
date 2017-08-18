@@ -68,7 +68,7 @@ class BrainBWin : public QMainWindow
     std::vector<int> found2lost;
 
     QString statDir;
-    QString appName = "NEMESPOR BrainB Test 4.1.1";
+    QString appName = "NEMESPOR BrainB Test 4.2.0";
 
 public:
     BrainBWin ( int w = 256, int h = 256, QWidget *parent = 0 );
