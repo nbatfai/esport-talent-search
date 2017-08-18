@@ -57,6 +57,7 @@ class BrainBWin : public QMainWindow
 
     int mouse_x;
     int mouse_y;
+    int yshift {50};    
     int nofLost {0};
     int nofFound {0};
 

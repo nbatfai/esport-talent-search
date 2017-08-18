@@ -32,7 +32,7 @@ BrainBWin::BrainBWin(int w, int h, QWidget *parent) : QMainWindow(parent)
 {
 
     setWindowTitle(appName);
-    setFixedSize(QSize(w, h));
+    setFixedSize(QSize(w, h+yshift));
 
     statDir = appName + " - " + QDate::currentDate().toString() + QString::number(QDateTime::currentMSecsSinceEpoch());
 
@@ -118,14 +118,14 @@ void BrainBWin::paintEvent(QPaintEvent *)
 
     QPainter qpainter(this);
 
-    qpainter.drawPixmap(0, 0, pixmap);
+    qpainter.drawPixmap(0, yshift, pixmap);
     
     qpainter.drawText(10, 20, "Press and hold the mouse button on Samu Entropy");
 
     int time = brainBThread->getT();
     int min, sec;
     millis2minsec(time, min, sec);
-    QString timestr = QString::number(min) + ":" + QString::number(sec);
+    QString timestr = QString::number(min) + ":" + QString::number(sec) + "/10:0";
     qpainter.drawText(10, 40, timestr);
 
     int bps = brainBThread->get_bps();
@@ -140,7 +140,7 @@ void BrainBWin::mouseMoveEvent(QMouseEvent *event)
 
     start = true;
     mouse_x = event->pos().x();
-    mouse_y = event->pos().y();
+    mouse_y = event->pos().y()-yshift;
 
 }
 
