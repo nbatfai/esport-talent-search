@@ -27,7 +27,7 @@
  #
  
 QT += widgets core
-CONFIG += c++17
+CONFIG += c++11 c++14 c++17
 QMAKE_CXXFLAGS += -fopenmp
 LIBS += -fopenmp 
 LIBS += `pkg-config --libs opencv`
