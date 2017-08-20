@@ -136,7 +136,7 @@ void BrainBWin::paintEvent(QPaintEvent *)
     {
           QString pausedstr = "PAUSED (" + QString::number(brainBThread->get_nofPaused()) + ")";
 
-        qpainter.drawText(150, 40, pausedstr);
+        qpainter.drawText(210, 40, pausedstr);
     }
 
     qpainter.end();
@@ -152,7 +152,7 @@ void BrainBWin::mousePressEvent(QMouseEvent *event)
 void BrainBWin::mouseReleaseEvent(QMouseEvent *event)
 {
 
-  brainBThread->set_paused(true);
+  //brainBThread->set_paused(true);
 
 }
 
