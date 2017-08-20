@@ -32,11 +32,11 @@ BrainBWin::BrainBWin(int w, int h, QWidget *parent) : QMainWindow(parent)
 {
 
     setWindowTitle(appName);
-    setFixedSize(QSize(w, h+yshift));
+    setFixedSize(QSize(w + 80, h + yshift + 80));
 
     statDir = appName + " - " + QDate::currentDate().toString() + QString::number(QDateTime::currentMSecsSinceEpoch());
 
-    brainBThread = new BrainBThread(w, h);
+    brainBThread = new BrainBThread(w + 80, h + 80);
     brainBThread->start();
 
     connect(brainBThread, SIGNAL(heroesChanged(QImage, int, int)),
@@ -62,7 +62,7 @@ void BrainBWin::endAndStats(const int &t)
 void BrainBWin::updateHeroes(const QImage &image, const int &x, const int &y)
 {
 
-    if (start) {
+    if (start && !brainBThread->get_paused()) {
 
         int dist = (this->mouse_x - x) * (this->mouse_x - x) + (this->mouse_y - y) * (this->mouse_y - y);
 
@@ -119,8 +119,8 @@ void BrainBWin::paintEvent(QPaintEvent *)
     QPainter qpainter(this);
 
     qpainter.drawPixmap(0, yshift, pixmap);
-    
-    qpainter.drawText(10, 20, "Press and hold the mouse button on Samu Entropy");
+
+    qpainter.drawText(10, 20, "Press and hold the mouse button on the center of Samu Entropy");
 
     int time = brainBThread->getT();
     int min, sec;
@@ -130,17 +130,39 @@ void BrainBWin::paintEvent(QPaintEvent *)
 
     int bps = brainBThread->get_bps();
     QString bpsstr = QString::number(bps) + " bps";
-    qpainter.drawText(80, 40, bpsstr);
+    qpainter.drawText(110, 40, bpsstr);
+
+    if (brainBThread->get_paused())
+    {
+          QString pausedstr = "PAUSED (" + QString::number(brainBThread->get_nofPaused()) + ")";
+
+        qpainter.drawText(150, 40, pausedstr);
+    }
 
     qpainter.end();
+}
+
+void BrainBWin::mousePressEvent(QMouseEvent *event)
+{
+
+  brainBThread->set_paused(false);
+
+}
+
+void BrainBWin::mouseReleaseEvent(QMouseEvent *event)
+{
+
+  brainBThread->set_paused(true);
+
 }
 
 void BrainBWin::mouseMoveEvent(QMouseEvent *event)
 {
 
     start = true;
-    mouse_x = event->pos().x();
-    mouse_y = event->pos().y()-yshift;
+
+    mouse_x = event->pos().x() - 40;
+    mouse_y = event->pos().y() - yshift - 40;
 
 }
 

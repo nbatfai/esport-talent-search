@@ -81,20 +81,23 @@ class BrainBThread : public QThread
     Q_OBJECT
 
     Heroes heroes;
+    int heroRectSize {40};
 
-    cv::Mat prev {400, 400, CV_8UC3, cv::Scalar ( 0, 0, 255 ) };
+    cv::Mat prev {400+80, 400+80, CV_8UC3, cv::Scalar ( 0, 0, 255 ) };
     int bps;
     long time {0};
     long endTime {10*60*10};
     int delay {100};
 
-    bool paused {false};
+    bool paused {true};
+    int nofPaused {0};
 
     std::vector<int> lostBPS;
     std::vector<int> foundBPS;
 
     int w;
     int h;
+    int dispShift {40};
 
 public:
     BrainBThread ( int w = 256, int h = 256 );
@@ -102,6 +105,7 @@ public:
 
     void run();
     void pause();
+    void set_paused(bool p);
     int getDelay() const {
 
         return delay;
@@ -184,9 +188,21 @@ public:
         return sqrt ( accum / ( vect.size()-1 ) );
     }
 
-    int get_bps() {
+    int get_bps() const {
 
         return bps;
+
+    }
+
+    bool get_paused() const {
+
+        return paused;
+
+    }
+    
+    int get_nofPaused() const {
+
+        return nofPaused;
 
     }
 
@@ -237,22 +253,22 @@ public:
 
     void draw () {
 
-        cv::Mat src ( 400,400, CV_8UC3, cv::Scalar ( 0, 0, 255 ) );
+        cv::Mat src ( w+2*heroRectSize, h+2*heroRectSize, CV_8UC3, cv::Scalar ( 0, 0, 255 ) );
 
         for ( Hero & hero : heroes ) {
 
-            cv::Point x ( hero.x-40, hero.y-40 );
-            cv::Point y ( hero.x+40, hero.y+40 );
+            cv::Point x ( hero.x-heroRectSize+dispShift, hero.y-heroRectSize+dispShift );
+            cv::Point y ( hero.x+heroRectSize+dispShift, hero.y+heroRectSize+dispShift );
             cv::rectangle ( src, x, y, cv::Scalar ( hero.color, 0, 0 ) );
 
             cv::putText ( src, hero.name, x, cv::FONT_HERSHEY_SIMPLEX, .35, cv::Scalar ( hero.color, 0, 0 ), 1 );
 
-            cv::Point xc ( hero.x, hero.y );
+            cv::Point xc ( hero.x+dispShift, hero.y+dispShift );
 
             cv::circle ( src, xc, 11, cv::Scalar ( 155, 0, 0 ), CV_FILLED, 8, 0 );
 
             cv::Mat box = src ( cv::Rect ( x, y ) );
-            cv::Mat cbox ( 80, 80, CV_8UC3, cv::Scalar ( 0, 120, 120 ) );
+            cv::Mat cbox ( 2*heroRectSize, 2*heroRectSize, CV_8UC3, cv::Scalar ( 0, 120, 120 ) );
             box = cbox*.3 + box*.7;
         }
 
@@ -266,16 +282,15 @@ public:
         bps = cv::countNonZero ( aRgb ) * 10;
 
         //qDebug()  << bps << " bits/sec";
+	
+	prev = src;
 
-        prev = src;
-
-        cv::Mat rgba;
-        cv::cvtColor ( src, rgba, CV_BGR2RGB );
-        QImage dest ( rgba.data, rgba.cols, rgba.rows, rgba.step, QImage::Format_RGB888 );
+        QImage dest( src.data, src.cols, src.rows, src.step, QImage::Format_RGB888 );
+        dest=dest.rgbSwapped();
         dest.bits();
 
         emit heroesChanged ( dest, heroes[0].x, heroes[0].y );
-
+        
     }
 
     long getT() const {

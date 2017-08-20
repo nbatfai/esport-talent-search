@@ -63,12 +63,13 @@ class BrainBWin : public QMainWindow
 
     bool firstLost {false};
     bool start {false};
+//    bool firstStart {false};
     playerstate state = lost;
     std::vector<int> lost2found;
     std::vector<int> found2lost;
 
     QString statDir;
-    QString appName = "NEMESPOR BrainB Test 4.2.0";
+    QString appName = "NEMESPOR BrainB Test 4.2.4";
 
 public:
     BrainBWin ( int w = 256, int h = 256, QWidget *parent = 0 );
@@ -89,6 +90,8 @@ public:
     void paintEvent ( QPaintEvent * );
     void keyPressEvent ( QKeyEvent *event );
     void mouseMoveEvent ( QMouseEvent *event );
+    void mousePressEvent ( QMouseEvent *event );
+    void mouseReleaseEvent( QMouseEvent *event );
 
     double mean ( std::vector<int> vect ) {
 
@@ -141,6 +144,7 @@ public:
             textStremam << "time      : " <<  brainBThread->getT() << "\n";
             textStremam << "bps       : " <<  brainBThread->get_bps() << "\n";
             textStremam << "noc       : " <<  brainBThread->nofHeroes() << "\n";
+            textStremam << "nop       : " <<  brainBThread->get_nofPaused() << "\n";
 
             textStremam << "lost      : "  << "\n";
             std::vector<int> l = brainBThread->lostV();

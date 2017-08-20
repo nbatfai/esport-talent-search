@@ -30,21 +30,22 @@
 
 BrainBThread::BrainBThread(int w, int h)
 {
-    this->w = w;
-    this->h = h;
+    dispShift = heroRectSize;
+    this->w = w - 2 * heroRectSize;
+    this->h = h - 2 * heroRectSize;
 
     std::srand(std::time(0));
 
-    Hero me(w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
-            h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 9);
-    Hero other1(w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
-                h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 5, "Norbi Entropy");
-    Hero other2(w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
-                h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 3, "Greta Entropy");
-    Hero other4(w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
-                h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 5, "Nandi Entropy");
-    Hero other5(w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
-                h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 7, "Matyi Entropy");
+    Hero me(this->w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
+            this->h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 9);
+    Hero other1(this->w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
+                this->h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 5, "Norbi Entropy");
+    Hero other2(this->w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
+                this->h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 3, "Greta Entropy");
+    Hero other4(this->w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
+                this->h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 5, "Nandi Entropy");
+    Hero other5(this->w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
+                this->h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 7, "Matyi Entropy");
 
     heroes.push_back(me);
     heroes.push_back(other1);
@@ -70,13 +71,14 @@ void BrainBThread::run()
             ++time;
 
             devel();
-            draw();
 
         }
 
+        draw();
+
     }
-    
-    emit endAndStats(endTime);   
+
+    emit endAndStats(endTime);
 
 }
 
@@ -84,6 +86,20 @@ void BrainBThread::pause()
 {
 
     paused = !paused;
+    if (paused)
+        ++nofPaused;
 
 }
+
+void BrainBThread::set_paused(bool p)
+{
+
+    if (!paused && p)
+        ++nofPaused;
+
+    paused = p;
+
+}
+
+
 
