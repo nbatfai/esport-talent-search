@@ -57,19 +57,18 @@ class BrainBWin : public QMainWindow
 
     int mouse_x;
     int mouse_y;
-    int yshift {50};    
+    int yshift {50};
     int nofLost {0};
     int nofFound {0};
 
     bool firstLost {false};
     bool start {false};
-//    bool firstStart {false};
     playerstate state = lost;
     std::vector<int> lost2found;
     std::vector<int> found2lost;
 
     QString statDir;
-    QString appName = "NEMESPOR BrainB Test 4.2.4";
+    QString appName = "NEMESPOR BrainB Test 4.2.5";
 
 public:
     BrainBWin ( int w = 256, int h = 256, QWidget *parent = 0 );
@@ -91,7 +90,7 @@ public:
     void keyPressEvent ( QKeyEvent *event );
     void mouseMoveEvent ( QMouseEvent *event );
     void mousePressEvent ( QMouseEvent *event );
-    void mouseReleaseEvent( QMouseEvent *event );
+    void mouseReleaseEvent ( QMouseEvent *event );
 
     double mean ( std::vector<int> vect ) {
 
