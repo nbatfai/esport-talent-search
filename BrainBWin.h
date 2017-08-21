@@ -68,9 +68,10 @@ class BrainBWin : public QMainWindow
     std::vector<int> found2lost;
 
     QString statDir;
-    QString appName = "NEMESPOR BrainB Test 4.2.5";
 
 public:
+    static const QString appName;
+    static const QString appVersion;
     BrainBWin ( int w = 256, int h = 256, QWidget *parent = 0 );
 
     void closeEvent ( QCloseEvent *e ) {
@@ -139,7 +140,7 @@ public:
         if ( ret ) {
             QTextStream textStremam ( &tfile );
 
-            textStremam << appName << "\n";
+            textStremam << appName + " " + appVersion << "\n";
             textStremam << "time      : " <<  brainBThread->getT() << "\n";
             textStremam << "bps       : " <<  brainBThread->get_bps() << "\n";
             textStremam << "noc       : " <<  brainBThread->nofHeroes() << "\n";
@@ -191,7 +192,8 @@ public:
             millis2minsec ( t, min, sec );
             textStremam << "time      : " <<  min  << ":"  << sec << "\n";
 
-            textStremam << "U R about " << ( ( ( m1+m2 ) /2 ) /8 ) /1024 << " Kilobytes\n";
+	    double res = ( ( ( (double)m1+(double)m2 ) /2.0 ) /8.0 ) /1024.0;
+            textStremam << "U R about " << res << " Kilobytes\n";
 
             tfile.close();
         }

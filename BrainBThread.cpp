@@ -30,9 +30,9 @@
 
 BrainBThread::BrainBThread(int w, int h)
 {
-    dispShift = heroRectSize;
-    this->w = w - 2 * heroRectSize;
-    this->h = h - 2 * heroRectSize;
+    dispShift = heroRectSize+heroRectSize/2;
+    this->w = w - 3 * heroRectSize;
+    this->h = h - 3 * heroRectSize;
 
     std::srand(std::time(0));
 

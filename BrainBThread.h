@@ -83,7 +83,7 @@ class BrainBThread : public QThread
     Heroes heroes;
     int heroRectSize {40};
 
-    cv::Mat prev {400+80, 400+80, CV_8UC3, cv::Scalar ( 0, 0, 255 ) };
+    cv::Mat prev {3*40, 3*40, CV_8UC3, cv::Scalar ( 0, 0, 255 ) };
     int bps;
     long time {0};
     long endTime {10*60*10};
@@ -253,7 +253,7 @@ public:
 
     void draw () {
 
-        cv::Mat src ( w+2*heroRectSize, h+2*heroRectSize, CV_8UC3, cv::Scalar ( 0, 0, 255 ) );
+        cv::Mat src ( w+3*heroRectSize, h+3*heroRectSize, CV_8UC3, cv::Scalar ( 0, 0, 255 ) );
 
         for ( Hero & hero : heroes ) {
 
@@ -274,7 +274,11 @@ public:
 
         cv::Mat comp;
 
-        cv::compare ( prev, src, comp, cv::CMP_NE );
+        cv::Point focusx ( heroes[0].x-(3*heroRectSize)/2+dispShift, heroes[0].y-(3*heroRectSize)/2+dispShift );
+        cv::Point focusy ( heroes[0].x+(3*heroRectSize)/2+dispShift, heroes[0].y+(3*heroRectSize)/2+dispShift );
+        cv::Mat focus = src ( cv::Rect ( focusx, focusy ) );
+		
+        cv::compare ( prev, focus, comp, cv::CMP_NE );
 
         cv::Mat aRgb;
         cv::extractChannel ( comp, aRgb, 0 );
@@ -283,7 +287,7 @@ public:
 
         //qDebug()  << bps << " bits/sec";
 	
-	prev = src;
+	prev = focus;
 
         QImage dest( src.data, src.cols, src.rows, src.step, QImage::Format_RGB888 );
         dest=dest.rgbSwapped();

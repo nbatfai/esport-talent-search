@@ -28,15 +28,18 @@
 
 #include "BrainBWin.h"
 
+const QString BrainBWin::appName = "NEMESPOR BrainB Test";
+const QString BrainBWin::appVersion = "5.0.1";
+
 BrainBWin::BrainBWin(int w, int h, QWidget *parent) : QMainWindow(parent)
 {
 
-    setWindowTitle(appName);
-    setFixedSize(QSize(w + 80, h + yshift + 80));
+    setWindowTitle(appName + " " + appVersion);
+    setFixedSize(QSize(w + 3*40, h + yshift + 3*40));
 
-    statDir = appName + " - " + QDate::currentDate().toString() + QString::number(QDateTime::currentMSecsSinceEpoch());
+    statDir = appName + " " + appVersion + " - " + QDate::currentDate().toString() + QString::number(QDateTime::currentMSecsSinceEpoch());
 
-    brainBThread = new BrainBThread(w + 80, h + 80);
+    brainBThread = new BrainBThread(w + 3*40, h + 3*40);
     brainBThread->start();
 
     connect(brainBThread, SIGNAL(heroesChanged(QImage, int, int)),
@@ -132,9 +135,8 @@ void BrainBWin::paintEvent(QPaintEvent *)
     QString bpsstr = QString::number(bps) + " bps";
     qpainter.drawText(110, 40, bpsstr);
 
-    if (brainBThread->get_paused())
-    {
-          QString pausedstr = "PAUSED (" + QString::number(brainBThread->get_nofPaused()) + ")";
+    if (brainBThread->get_paused()) {
+        QString pausedstr = "PAUSED (" + QString::number(brainBThread->get_nofPaused()) + ")";
 
         qpainter.drawText(210, 40, pausedstr);
     }
@@ -145,14 +147,14 @@ void BrainBWin::paintEvent(QPaintEvent *)
 void BrainBWin::mousePressEvent(QMouseEvent *event)
 {
 
-  brainBThread->set_paused(false);
+    brainBThread->set_paused(false);
 
 }
 
 void BrainBWin::mouseReleaseEvent(QMouseEvent *event)
 {
 
-  //brainBThread->set_paused(true);
+    //brainBThread->set_paused(true);
 
 }
 
@@ -161,8 +163,8 @@ void BrainBWin::mouseMoveEvent(QMouseEvent *event)
 
     start = true;
 
-    mouse_x = event->pos().x() - 40;
-    mouse_y = event->pos().y() - yshift - 40;
+    mouse_x = event->pos().x() - 60;
+    mouse_y = event->pos().y() - yshift - 60;
 
 }
 
