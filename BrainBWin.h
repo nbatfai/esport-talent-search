@@ -6,11 +6,11 @@
  *
  * @file BrainBWin.h
  * @author  Norbert Bátfai <nbatfai@gmail.com>
- * @version 0.0.1
+ * @version 6.0.1
  *
  * @section LICENSE
  *
- * Copyright (C) 2017 Norbert Bátfai, nbatfai@gmail.com
+ * Copyright (C) 2017, 2018 Norbert Bátfai, nbatfai@gmail.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,6 +61,8 @@ class BrainBWin : public QMainWindow
     int nofLost {0};
     int nofFound {0};
 
+    int xs, ys;
+
     bool firstLost {false};
     bool start {false};
     playerstate state = lost;
@@ -83,7 +85,6 @@ public:
             e->ignore();
         }
 
-
     }
 
     virtual ~BrainBWin();
@@ -95,22 +96,30 @@ public:
 
     double mean ( std::vector<int> vect ) {
 
-        double sum = std::accumulate ( vect.begin (), vect.end (), 0.0 );
-        return  sum / vect.size();
-
+        if ( vect.size() > 0 ) {
+            double sum = std::accumulate ( vect.begin (), vect.end (), 0.0 );
+            return  sum / vect.size();
+        } else {
+            return 0.0;
+        }
     }
 
     double var ( std::vector<int> vect, double mean ) {
 
-        double accum = 0.0;
+        if ( vect.size() > 1 ) {
 
-        std::for_each ( vect.begin (), vect.end (), [&] ( const double d ) {
-            accum += ( d - mean ) * ( d - mean );
-        } );
+            double accum = 0.0;
 
-        return sqrt ( accum / ( vect.size()-1 ) );
+            std::for_each ( vect.begin (), vect.end (), [&] ( const double d ) {
+                accum += ( d - mean ) * ( d - mean );
+            } );
+
+            return sqrt ( accum / ( vect.size()-1 ) );
+        } else {
+            return 0.0;
+        }
+
     }
-
 
     void millis2minsec ( int millis, int &min, int &sec ) {
 
@@ -192,7 +201,7 @@ public:
             millis2minsec ( t, min, sec );
             textStremam << "time      : " <<  min  << ":"  << sec << "\n";
 
-	    double res = ( ( ( (double)m1+(double)m2 ) /2.0 ) /8.0 ) /1024.0;
+            double res = ( ( ( ( double ) m1+ ( double ) m2 ) /2.0 ) /8.0 ) /1024.0;
             textStremam << "U R about " << res << " Kilobytes\n";
 
             tfile.close();

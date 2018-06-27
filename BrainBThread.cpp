@@ -3,11 +3,11 @@
  *
  * @file BrainBThread.cpp
  * @author  Norbert Bátfai <nbatfai@gmail.com>
- * @version 0.0.1
+ * @version 6.0.1
  *
  * @section LICENSE
  *
- * Copyright (C) 2017 Norbert Bátfai, nbatfai@gmail.com
+ * Copyright (C) 2017, 2018 Norbert Bátfai, nbatfai@gmail.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,30 +28,33 @@
 
 #include "BrainBThread.h"
 
-BrainBThread::BrainBThread(int w, int h)
+BrainBThread::BrainBThread ( int w, int h )
 {
-    dispShift = heroRectSize+heroRectSize/2;
-    this->w = w - 3 * heroRectSize;
-    this->h = h - 3 * heroRectSize;
 
-    std::srand(std::time(0));
+        dispShift = heroRectSize+heroRectSize/2;
 
-    Hero me(this->w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
-            this->h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 9);
-    Hero other1(this->w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
-                this->h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 5, "Norbi Entropy");
-    Hero other2(this->w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
-                this->h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 3, "Greta Entropy");
-    Hero other4(this->w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
-                this->h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 5, "Nandi Entropy");
-    Hero other5(this->w / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100,
-                this->h / 2 + 200.0 * std::rand() / (RAND_MAX + 1.0) - 100, 255.0 * std::rand() / (RAND_MAX + 1.0), 7, "Matyi Entropy");
+        this->w = w - 3 * heroRectSize;
+        this->h = h - 3 * heroRectSize;
 
-    heroes.push_back(me);
-    heroes.push_back(other1);
-    heroes.push_back(other2);
-    heroes.push_back(other4);
-    heroes.push_back(other5);
+        std::srand ( std::time ( 0 ) );
+
+        Hero me ( this->w / 2 + 200.0 * std::rand() / ( RAND_MAX + 1.0 ) - 100,
+                  this->h / 2 + 200.0 * std::rand() / ( RAND_MAX + 1.0 ) - 100, 255.0 * std::rand() / ( RAND_MAX + 1.0 ), 9 );
+
+        Hero other1 ( this->w / 2 + 200.0 * std::rand() / ( RAND_MAX + 1.0 ) - 100,
+                      this->h / 2 + 200.0 * std::rand() / ( RAND_MAX + 1.0 ) - 100, 255.0 * std::rand() / ( RAND_MAX + 1.0 ), 5, "Norbi Entropy" );
+        Hero other2 ( this->w / 2 + 200.0 * std::rand() / ( RAND_MAX + 1.0 ) - 100,
+                      this->h / 2 + 200.0 * std::rand() / ( RAND_MAX + 1.0 ) - 100, 255.0 * std::rand() / ( RAND_MAX + 1.0 ), 3, "Greta Entropy" );
+        Hero other4 ( this->w / 2 + 200.0 * std::rand() / ( RAND_MAX + 1.0 ) - 100,
+                      this->h / 2 + 200.0 * std::rand() / ( RAND_MAX + 1.0 ) - 100, 255.0 * std::rand() / ( RAND_MAX + 1.0 ), 5, "Nandi Entropy" );
+        Hero other5 ( this->w / 2 + 200.0 * std::rand() / ( RAND_MAX + 1.0 ) - 100,
+                      this->h / 2 + 200.0 * std::rand() / ( RAND_MAX + 1.0 ) - 100, 255.0 * std::rand() / ( RAND_MAX + 1.0 ), 7, "Matyi Entropy" );
+
+        heroes.push_back ( me );
+        heroes.push_back ( other1 );
+        heroes.push_back ( other2 );
+        heroes.push_back ( other4 );
+        heroes.push_back ( other5 );
 
 }
 
@@ -62,42 +65,44 @@ BrainBThread::~BrainBThread()
 
 void BrainBThread::run()
 {
-    while (time < endTime) {
+        while ( time < endTime ) {
 
-        QThread::msleep(delay);
+                QThread::msleep ( delay );
 
-        if (!paused) {
+                if ( !paused ) {
 
-            ++time;
+                        ++time;
 
-            devel();
+                        devel();
+
+                }
+
+                draw();
 
         }
 
-        draw();
-
-    }
-
-    emit endAndStats(endTime);
+        emit endAndStats ( endTime );
 
 }
 
 void BrainBThread::pause()
 {
 
-    paused = !paused;
-    if (paused)
-        ++nofPaused;
+        paused = !paused;
+        if ( paused ) {
+                ++nofPaused;
+        }
 
 }
 
-void BrainBThread::set_paused(bool p)
+void BrainBThread::set_paused ( bool p )
 {
 
-    if (!paused && p)
-        ++nofPaused;
+        if ( !paused && p ) {
+                ++nofPaused;
+        }
 
-    paused = p;
+        paused = p;
 
 }
 

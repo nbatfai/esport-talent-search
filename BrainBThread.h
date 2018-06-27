@@ -6,11 +6,11 @@
  *
  * @file BrainBThread.h
  * @author  Norbert Bátfai <nbatfai@gmail.com>
- * @version 0.0.1
+ * @version 6.0.1
  *
  * @section LICENSE
  *
- * Copyright (C) 2017 Norbert Bátfai, nbatfai@gmail.com
+ * Copyright (C) 2017, 2018 Norbert Bátfai, nbatfai@gmail.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,14 +61,14 @@ public:
     {}
     ~Hero() {}
 
-    void move ( int max, int env ) {
+    void move ( int maxx, int maxy, int env ) {
 
         int newx = x+ ( ( ( double ) agility*1.0 ) * ( double ) ( std::rand() / ( RAND_MAX+1.0 ) )-agility/2 ) ;
-        if ( newx-env > 0 && newx+env < max ) {
+        if ( newx-env > 0 && newx+env < maxx ) {
             x = newx;
         }
         int newy = y+ ( ( ( double ) agility*1.0 ) * ( double ) ( std::rand() / ( RAND_MAX+1.0 ) )-agility/2 );
-        if ( newy-env > 0 && newy+env < max ) {
+        if ( newy-env > 0 && newy+env < maxy ) {
             y = newy;
         }
 
@@ -80,10 +80,15 @@ class BrainBThread : public QThread
 {
     Q_OBJECT
 
+    cv::Scalar cBg { 247, 223, 208 };
+    cv::Scalar cBorderAndText { 47, 8, 4 };
+    cv::Scalar cCenter { 170, 18, 1 };
+    cv::Scalar cBoxes { 10, 235, 252 };
+
     Heroes heroes;
     int heroRectSize {40};
 
-    cv::Mat prev {3*40, 3*40, CV_8UC3, cv::Scalar ( 0, 0, 255 ) };
+    cv::Mat prev {3*heroRectSize, 3*heroRectSize, CV_8UC3, cBg };
     int bps;
     long time {0};
     long endTime {10*60*10};
@@ -105,7 +110,7 @@ public:
 
     void run();
     void pause();
-    void set_paused(bool p);
+    void set_paused ( bool p );
     int getDelay() const {
 
         return delay;
@@ -123,7 +128,7 @@ public:
 
         for ( Hero & hero : heroes ) {
 
-            hero.move ( w, w/10 );
+            hero.move ( w, h, ( h<w ) ?h/10:w/10 );
 
         }
 
@@ -194,12 +199,19 @@ public:
 
     }
 
+    int get_w() const {
+
+        return w;
+
+    }
+
+
     bool get_paused() const {
 
         return paused;
 
     }
-    
+
     int get_nofPaused() const {
 
         return nofPaused;
@@ -233,8 +245,8 @@ public:
 
         }
 
-        Hero other ( 200 +200.0*std::rand() / ( RAND_MAX+1.0 )-100,
-                     200 +200.0*std::rand() / ( RAND_MAX+1.0 )-100,
+        Hero other ( w/2 + 200.0*std::rand() / ( RAND_MAX+1.0 )-100,
+                     h/2 + 200.0*std::rand() / ( RAND_MAX+1.0 )-100,
                      255.0*std::rand() / ( RAND_MAX+1.0 ), 11, "New Entropy" );
 
         heroes.push_back ( other );
@@ -253,31 +265,34 @@ public:
 
     void draw () {
 
-        cv::Mat src ( w+3*heroRectSize, h+3*heroRectSize, CV_8UC3, cv::Scalar ( 0, 0, 255 ) );
+        cv::Mat src ( h+3*heroRectSize, w+3*heroRectSize, CV_8UC3, cBg );
 
         for ( Hero & hero : heroes ) {
 
             cv::Point x ( hero.x-heroRectSize+dispShift, hero.y-heroRectSize+dispShift );
             cv::Point y ( hero.x+heroRectSize+dispShift, hero.y+heroRectSize+dispShift );
-            cv::rectangle ( src, x, y, cv::Scalar ( hero.color, 0, 0 ) );
 
-            cv::putText ( src, hero.name, x, cv::FONT_HERSHEY_SIMPLEX, .35, cv::Scalar ( hero.color, 0, 0 ), 1 );
+            cv::rectangle ( src, x, y, cBorderAndText );
 
-            cv::Point xc ( hero.x+dispShift, hero.y+dispShift );
+            cv::putText ( src, hero.name, x, cv::FONT_HERSHEY_SIMPLEX, .35, cBorderAndText, 1 );
 
-            cv::circle ( src, xc, 11, cv::Scalar ( 155, 0, 0 ), CV_FILLED, 8, 0 );
+            cv::Point xc ( hero.x+dispShift , hero.y+dispShift );
+
+            cv::circle ( src, xc, 11, cCenter, CV_FILLED, 8, 0 );
 
             cv::Mat box = src ( cv::Rect ( x, y ) );
-            cv::Mat cbox ( 2*heroRectSize, 2*heroRectSize, CV_8UC3, cv::Scalar ( 0, 120, 120 ) );
+
+            cv::Mat cbox ( 2*heroRectSize, 2*heroRectSize, CV_8UC3, cBoxes );
             box = cbox*.3 + box*.7;
+
         }
 
         cv::Mat comp;
 
-        cv::Point focusx ( heroes[0].x-(3*heroRectSize)/2+dispShift, heroes[0].y-(3*heroRectSize)/2+dispShift );
-        cv::Point focusy ( heroes[0].x+(3*heroRectSize)/2+dispShift, heroes[0].y+(3*heroRectSize)/2+dispShift );
+        cv::Point focusx ( heroes[0].x- ( 3*heroRectSize ) /2+dispShift, heroes[0].y- ( 3*heroRectSize ) /2+dispShift );
+        cv::Point focusy ( heroes[0].x+ ( 3*heroRectSize ) /2+dispShift, heroes[0].y+ ( 3*heroRectSize ) /2+dispShift );
         cv::Mat focus = src ( cv::Rect ( focusx, focusy ) );
-		
+
         cv::compare ( prev, focus, comp, cv::CMP_NE );
 
         cv::Mat aRgb;
@@ -286,15 +301,15 @@ public:
         bps = cv::countNonZero ( aRgb ) * 10;
 
         //qDebug()  << bps << " bits/sec";
-	
-	prev = focus;
 
-        QImage dest( src.data, src.cols, src.rows, src.step, QImage::Format_RGB888 );
+        prev = focus;
+
+        QImage dest ( src.data, src.cols, src.rows, src.step, QImage::Format_RGB888 );
         dest=dest.rgbSwapped();
         dest.bits();
 
         emit heroesChanged ( dest, heroes[0].x, heroes[0].y );
-        
+
     }
 
     long getT() const {
@@ -308,8 +323,8 @@ public:
         time = endTime;
 
     }
-    
-    
+
+
 signals:
 
     void heroesChanged ( const QImage &image, const int &x, const int &y );
@@ -318,3 +333,4 @@ signals:
 };
 
 #endif // BrainBThread_H
+
