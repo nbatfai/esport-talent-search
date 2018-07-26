@@ -80,11 +80,22 @@ class BrainBThread : public QThread
 {
     Q_OBJECT
 
+    
+     //Norbi
     cv::Scalar cBg { 247, 223, 208 };
     cv::Scalar cBorderAndText { 47, 8, 4 };
     cv::Scalar cCenter { 170, 18, 1 };
     cv::Scalar cBoxes { 10, 235, 252 };
+    
 
+    /*
+    //Matyi
+    cv::Scalar cBg { 86, 26, 228 };
+    cv::Scalar cBorderAndText { 14, 177, 232 };
+    cv::Scalar cCenter { 232, 14, 103 };
+    cv::Scalar cBoxes { 14, 232, 195 };
+*/
+    
     Heroes heroes;
     int heroRectSize {40};
 
@@ -245,10 +256,28 @@ public:
 
         }
 
+        /*
         Hero other ( w/2 + 200.0*std::rand() / ( RAND_MAX+1.0 )-100,
                      h/2 + 200.0*std::rand() / ( RAND_MAX+1.0 )-100,
                      255.0*std::rand() / ( RAND_MAX+1.0 ), 11, "New Entropy" );
+                     */
 
+	double rx = 200.0;
+	if(heroes[0].x - 200 < 0)
+	  rx = heroes[0].x;
+	else if(heroes[0].x + 200 > w)
+	  rx = w - heroes[0].x;
+	
+	double ry = 200.0;
+	if(heroes[0].y - 200 < 0)
+	  ry = heroes[0].y;
+	else if(heroes[0].y + 200 > h)
+	  ry = h - heroes[0].y;
+	
+        Hero other ( heroes[0].x + rx*std::rand() / ( RAND_MAX+1.0 )-rx/2,
+                     heroes[0].y + ry*std::rand() / ( RAND_MAX+1.0 )-ry/2,
+                     255.0*std::rand() / ( RAND_MAX+1.0 ), 11, "New Entropy" );
+		
         heroes.push_back ( other );
 
         for ( Hero & hero : heroes ) {
