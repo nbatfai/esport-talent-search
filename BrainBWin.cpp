@@ -29,7 +29,7 @@
 #include "BrainBWin.h"
 
 const QString BrainBWin::appName = "NEMESPOR BrainB Test";
-const QString BrainBWin::appVersion = "6.0.1";
+const QString BrainBWin::appVersion = "6.0.3";
 
 BrainBWin::BrainBWin ( int w, int h, QWidget *parent ) : QMainWindow ( parent )
 {
