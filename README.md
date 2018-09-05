@@ -1,13 +1,7 @@
 # Benchmarking Cognitive Abilities of the Brain with Computer Games
 
-* Norbert Bátfai, Dávid Papp, Renátó Besenczi, Gergő Bogacsovics, Dávid Veres (2018)
-Benchmarking Cognitive Abilities of the Brain with Computer Games, 
-[https://arxiv.org/abs/1809.00172]([https://arxiv.org/abs/1809.00172)
-* Bátfai, Norbert and Bogacsovics, Gergő and Paszerbovics, Roland and Antal, 
- Asztrik and Czevár, István and Besenczi, Renátó (2018) E-sportolók mérése. 
-INFORMÁCIÓS TÁRSADALOM: TÁRSADALOMTUDOMÁNYI FOLYÓIRAT, 
-18 (1). pp. 147-155. ISSN 1587-8694, 
-https://doi.org/10.22503/inftars.XVIII.2018.1.10 , [http://real.mtak.hu/79216/1/it_2018_1_10_batfai_et_al.pdf](http://real.mtak.hu/79216/1/it_2018_1_10_batfai_et_al.pdf)
+* Norbert Bátfai, Dávid Papp, Renátó Besenczi, Gergő Bogacsovics, Dávid Veres (2018) Benchmarking Cognitive Abilities of the Brain with Computer Games,  [https://arxiv.org/abs/1809.00172]([https://arxiv.org/abs/1809.00172)
+* Bátfai, Norbert and Bogacsovics, Gergő and Paszerbovics, Roland and Antal, Asztrik and Czevár, István and Besenczi, Renátó (2018) E-sportolók mérése.  INFORMÁCIÓS TÁRSADALOM: TÁRSADALOMTUDOMÁNYI FOLYÓIRAT,  18 (1). pp. 147-155. ISSN 1587-8694, https://doi.org/10.22503/inftars.XVIII.2018.1.10 , [http://real.mtak.hu/79216/1/it_2018_1_10_batfai_et_al.pdf](http://real.mtak.hu/79216/1/it_2018_1_10_batfai_et_al.pdf)
 
 ## Series No 5
 
