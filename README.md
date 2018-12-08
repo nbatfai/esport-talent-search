@@ -1,5 +1,7 @@
 # Benchmarking Cognitive Abilities of the Brain with Computer Games
 
+* https://prezi.com/yiiemg0xjgso/tehetsegkutatas-az-esportban/
+* Bátfai Norbert, Tehetségkutatás az esportban, Program és absztrakt kötet, J. Kerülő, T. Jenei, and I. Gyarmati, Eds., XVII. ORSZÁGOS NEVELÉSTUDOMÁNYI KONFERENCIA. MTA Pedagógiai Tudományos Bizottság Nyíregyházi Egyetem, 2017, p. 39, http://onk2017.hu/wp-content/uploads/2018/04/ONK_2018_aprilis.pdf
 * Norbert Bátfai, Dávid Papp, Renátó Besenczi, Gergő Bogacsovics, Dávid Veres (2018) Benchmarking Cognitive Abilities of the Brain with Computer Games,  [https://arxiv.org/abs/1809.00172](https://arxiv.org/abs/1809.00172)
 * Bátfai, Norbert and Bogacsovics, Gergő and Paszerbovics, Roland and Antal, Asztrik and Czevár, István and Besenczi, Renátó (2018) E-sportolók mérése.  INFORMÁCIÓS TÁRSADALOM: TÁRSADALOMTUDOMÁNYI FOLYÓIRAT,  18 (1). pp. 147-155. ISSN 1587-8694, https://doi.org/10.22503/inftars.XVIII.2018.1.10 , [http://real.mtak.hu/79216/1/it_2018_1_10_batfai_et_al.pdf](http://real.mtak.hu/79216/1/it_2018_1_10_batfai_et_al.pdf)
 
